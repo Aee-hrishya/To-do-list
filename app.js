@@ -120,6 +120,29 @@ function removeTask(e) {
             e.target.parentElement.parentElement.remove();//The parent element here is the a tag then its parent is the li tag which we want to remove
         }
     }
+
+    //Remove from local storage
+    removeFromLocalStorage(e.target.parentElement.parentElement);
+}
+
+//removeFromLocalStorage function
+function removeFromLocalStorage(taskItem){
+    let tasks;
+    if (localStorage.getItem("tasks") === null) {
+        tasks = [];
+    }
+    else {
+        tasks = JSON.parse(localStorage.getItem("tasks"));
+    }
+
+    tasks.forEach(function(task, index){
+        if(taskItem.textContent === task){
+            tasks.splice(index, 1);
+        }
+    });
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));//setting the changes to the local storage
+
 }
 
 //clearTasks function
@@ -130,6 +153,14 @@ function clearTasks(e) {
     while (taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
     }
+
+    //clear tasks form local storage
+    clearTasksFromLocalStorage();
+}
+
+//clearTasksFromLocalStorage function
+function clearTasksFromLocalStorage(){
+    localStorage.clear();
 }
 
 //filterTasks function
